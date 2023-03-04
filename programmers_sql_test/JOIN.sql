@@ -1,5 +1,40 @@
 -- https://school.programmers.co.kr/learn/courses/30/parts/17046
 
+# 조건에 맞는 도서와 저자 리스트 출력하기 https://school.programmers.co.kr/learn/courses/30/lessons/144854
+SELECT 
+    B.BOOK_ID, 
+    A.AUTHOR_NAME,
+    # DATE(B.PUBLISHED_DATE) AS PUBLISHED_DATE, -- DATE()로 하더라도 시간부분이 그대로 남아있음. 
+    DATE_FORMAT(B.PUBLISHED_DATE, "%Y-%m-%d") AS PUBLISHED_DATE -- 이럴땐, DATE_FORMAT( {날짜}, {포맷} )을 작성하면 된다.
+FROM BOOK AS B
+    JOIN AUTHOR AS A
+        ON B.AUTHOR_ID = A.AUTHOR_ID
+WHERE B.CATEGORY = '경제'
+ORDER BY 3
+
+/*
+포맷은 날짜,시간 위치에 들어가는 값을 지정할 수 있음.
+%Y: year, four digits
+%y: year, two digits
+%m: month, two digits (01-12)
+%c: month, numeric (0-12)
+%d: day of the month, two digits (01-31)
+%e: day of the month, numeric (0-31)
+%H: hour, two digits (00-23)
+%h: hour, two digits (01-12)
+%i: minutes, two digits (00-59)
+%s: seconds, two digits (00-59)
+%p: AM or PM
+
+예를 들어 "YYYY-MM-DD"는 %Y-%m-%d 포맷으로 쓸 수가 있다.
+DATE_FORMAT("2020-01-10 00:00:00", "%Y-%m-%d") -> "2020-01-10"
+
+년월일 순서를 바꿀수도 있다.
+DATE_FORMAT('2022-03-04', '%d/%m/%Y') -> "04/03/2022"
+
+*/
+
+
 # 1. 5월 식품들의 총매출 조회하기
 SELECT 
     # 식품 ID, 식품 이름, 총매출

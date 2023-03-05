@@ -77,6 +77,21 @@ WHERE OPTIONS LIKE '%네비게이션%' --  '네비게이션' 옵션이 포함된
 ORDER BY CAR_ID DESC -- 자동차 ID를 기준으로 내림차순 정렬.
 
 
+# 자동차 대여 기록에서 장기/단기 대여 구분하기 https://school.programmers.co.kr/learn/courses/30/lessons/151138
+SELECT
+    HISTORY_ID,
+    CAR_ID,
+    DATE_FORMAT(START_DATE, '%Y-%m-%d') AS START_DATE,
+    DATE_FORMAT(END_DATE, '%Y-%m-%d') AS END_DATE,
+    CASE 
+        WHEN (DATEDIFF(END_DATE, START_DATE)+1) >= 30 THEN '장기 대여'
+        ELSE '단기 대여'
+    END AS RENT_TYPE
+    -- 대여 기간이 30일 이상이면 '장기 대여' 그렇지 않으면 '단기 대여' 로 표시하는 컬럼(컬럼명: RENT_TYPE)을 추가
+FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY 
+WHERE START_DATE BETWEEN '2022-09-01' AND '2022-09-30' -- 대여 시작일이 2022년 9월에 속하는 대여 기록에 대해서
+ORDER BY 1 DESC -- 대여 기록 ID를 기준으로 내림차순 정렬
+
 # 1. 취소되지 않은 진료 예약 조회하기
 SELECT
     -- 진료예약번호, 환자이름, 환자번호, 진료과코드, 의사이름, 진료예약일시

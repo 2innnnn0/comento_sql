@@ -48,6 +48,24 @@ AND MONTH(RH.START_DATE) = 10
 ORDER BY 
     C.CAR_ID DESC -- 자동차 ID를 기준으로 내림차순 정렬
 
+# 자동차 평균 대여 기간 구하기 https://school.programmers.co.kr/learn/courses/30/lessons/157342
+SELECT 
+    *
+FROM 
+    (
+    SELECT
+        -- 자동차 ID와 평균 대여 기간(컬럼명: AVERAGE_DURATION) 리스트를 출력
+        -- 평균 대여 기간은 소수점 두번째 자리에서 반올림
+        CAR_ID,
+        ROUND(AVG(DATEDIFF(END_DATE, START_DATE)+1),1) AS AVERAGE_DURATION
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY 
+    WHERE 1=1
+        -- 평균 대여 기간이 7일 이상인
+    GROUP BY 1
+    ) t
+WHERE AVERAGE_DURATION >= 7 -- 평균 대여 기간이 7일 이상인
+ORDER BY 
+    AVERAGE_DURATION DESC, CAR_ID DESC -- 평균 대여 기간을 기준으로 내림차순, 자동차 ID를 기준으로 내림차순 정렬
 
 
 # 1. 취소되지 않은 진료 예약 조회하기

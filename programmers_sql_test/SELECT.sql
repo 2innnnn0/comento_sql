@@ -1,4 +1,12 @@
 -- https://school.programmers.co.kr/learn/courses/30/parts/17042
+# 평균 일일 대여 요금 구하기 https://school.programmers.co.kr/learn/courses/30/lessons/151136
+SELECT
+    ROUND(AVG(DAILY_FEE), 0) AS AVERAGE_FEE -- 자동차들의 평균 일일 대여 요금 | 소수 첫 번째 자리에서 반올림하고, 컬럼명은 AVERAGE_FEE 로 지정해주세요.
+FROM 
+    CAR_RENTAL_COMPANY_CAR -- CAR_RENTAL_COMPANY_CAR 테이블에서
+WHERE 
+    CAR_TYPE = 'SUV' -- 자동차 종류가 'SUV'
+
 # 1. 과일로 만든 아이스크림 고르기
 -- 코드를 입력하세요
 SELECT

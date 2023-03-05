@@ -68,6 +68,15 @@ ORDER BY
     AVERAGE_DURATION DESC, CAR_ID DESC -- 평균 대여 기간을 기준으로 내림차순, 자동차 ID를 기준으로 내림차순 정렬
 
 
+# 특정 옵션이 포함된 자동차 리스트 구하기 https://school.programmers.co.kr/learn/courses/30/lessons/157343
+SELECT
+    -- 자동차 리스트를 출력 > 특별한 지칭이 없으면 전체.
+    *
+FROM CAR_RENTAL_COMPANY_CAR
+WHERE OPTIONS LIKE '%네비게이션%' --  '네비게이션' 옵션이 포함된 
+ORDER BY CAR_ID DESC -- 자동차 ID를 기준으로 내림차순 정렬.
+
+
 # 1. 취소되지 않은 진료 예약 조회하기
 SELECT
     -- 진료예약번호, 환자이름, 환자번호, 진료과코드, 의사이름, 진료예약일시
@@ -87,6 +96,7 @@ AND DATE_FORMAT(A.APNT_YMD, '%Y-%m-%d') = '2022-04-13'  -- 2022년 4월 13일 �
 AND A.APNT_CNCL_YN = 'N'
 AND D.MCDP_CD = 'CS'
 ORDER BY A.APNT_YMD -- 진료예약일시를 기준으로 오름차순 정렬해주세요.
+
 
 # 2. 조건별로 분류하여 주문상태 출력하기
 SELECT

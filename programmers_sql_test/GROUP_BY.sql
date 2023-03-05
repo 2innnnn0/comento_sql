@@ -29,6 +29,8 @@ ORDER BY
     MONTH(START_DATE), 
     CAR_ID DESC
 
+
+
 # 자동차 대여 기록에서 대여중 / 대여 가능 여부 구분하기 https://school.programmers.co.kr/learn/courses/30/lessons/157340#
 SELECT 
     CAR_ID,
@@ -65,6 +67,18 @@ ORDER BY
     1 -- 카테고리명을 기준으로 오름차순 정렬
 
 
+# 자동차 종류 별 특정 옵션이 포함된 자동차 수 구하기
+SELECT
+    CAR_TYPE, -- 자동차 종류 별로 몇 대인지 출력
+    COUNT(CAR_ID) AS CARS -- 자동차 수에 대한 컬럼명은 CARS로 지정
+FROM CAR_RENTAL_COMPANY_CAR
+WHERE 
+    (OPTIONS LIKE '%통풍시트%'
+     OR OPTIONS LIKE '%열선시트%'
+     OR OPTIONS LIKE '%가죽시트%'
+     )-- '통풍시트', '열선시트', '가죽시트' 중 하나 이상의 옵션이 포함된 자동차
+GROUP BY 1
+ORDER BY 1 -- 결과는 자동차 종류를 기준으로 오름차순 정렬
 
 # 1. 진료과별 총 예약 횟수 출력하기
 SELECT

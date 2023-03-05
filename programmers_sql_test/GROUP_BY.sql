@@ -28,6 +28,20 @@ HAVING RECORDS > 0
 ORDER BY 
     MONTH(START_DATE), 
     CAR_ID DESC
+    
+# 카테고리 별 도서 판매량 집계하기 https://school.programmers.co.kr/learn/courses/30/lessons/144855
+SELECT
+    b.category AS CATEGORY, -- "카테고리 별 도서 판매량을 합산" (~별 = GROUP)
+    SUM(bs.sales) AS TOTAL_SALES  -- 카테고리(CATEGORY), 총 판매량(TOTAL_SALES) 리스트를 출력
+FROM BOOK_SALES bs
+    JOIN BOOK b
+        ON bs.book_id = b.book_id
+WHERE bs.sales_date BETWEEN '2022-01-01' AND '2022-01-31' -- "2022년 1월"
+GROUP BY 
+    1 -- 첫번째 컬럼(category)
+ORDER BY 
+    1 -- 카테고리명을 기준으로 오름차순 정렬
+
 
 
 # 1. 진료과별 총 예약 횟수 출력하기

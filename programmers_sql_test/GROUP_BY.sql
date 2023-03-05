@@ -80,6 +80,28 @@ WHERE
 GROUP BY 1
 ORDER BY 1 -- 결과는 자동차 종류를 기준으로 오름차순 정렬
 
+
+# 저자 별 카테고리 별 매출액 집계하기 https://school.programmers.co.kr/learn/courses/30/lessons/144856
+# 2022년 1월의 도서 판매 데이터를 기준으로 저자 별, 카테고리 별 매출액(TOTAL_SALES = 판매량 * 판매가) 을 구하여, 저자 ID(AUTHOR_ID), 저자명(AUTHOR_NAME), 카테고리(CATEGORY), 매출액(SALES) 리스트를 출력하는 SQL문을 작성해주세요.
+# 결과는 저자 ID를 오름차순으로, 저자 ID가 같다면 카테고리를 내림차순 정렬해주세요.
+-- 코드를 입력하세요
+SELECT
+    -- 저자 별, 카테고리 별 매출액(TOTAL_SALES = 판매량 * 판매가)
+    -- 저자 ID(AUTHOR_ID), 저자명(AUTHOR_NAME), 카테고리(CATEGORY), 매출액(SALES) 리스트를 출력
+    A.AUTHOR_ID,
+    A.AUTHOR_NAME,
+    B.CATEGORY,
+    SUM(BS.SALES * B.PRICE) AS TOTAL_SALES -- (TOTAL_SALES = 판매량 * 판매가)
+FROM BOOK AS B -- 책. BOOK_ID(PK) / AUTHOR_ID(FK)
+    JOIN BOOK_SALES AS BS  -- 책판매량. BOOK_ID(PK)
+        ON B.BOOK_ID = BS.BOOK_ID
+    JOIN AUTHOR AS A -- 저자 AUTHOR_ID
+        ON B.AUTHOR_ID = A.AUTHOR_ID
+WHERE BS.SALES_DATE BETWEEN '2022-01-01' AND '2022-01-31' -- 2022년 1월의 도서 판매 데이터를 기준
+GROUP BY 1,2,3
+ORDER BY 1,3 DESC -- 저자 ID를 오름차순, 카테고리를 내림차순
+
+
 # 1. 진료과별 총 예약 횟수 출력하기
 SELECT
    MCDP_CD AS 진료과코드,

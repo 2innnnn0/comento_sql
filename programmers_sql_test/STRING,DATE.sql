@@ -35,6 +35,21 @@ FROM base_t bt
 ORDER BY FEE DESC, bt.HISTORY_ID DESC -- 1. 대여 금액을 기준으로 내림차순 정렬하고, 2. 대여 기록 ID를 기준으로 내림차순 정렬
 
 
+# 대여 기록이 존재하는 자동차 리스트 구하기 https://school.programmers.co.kr/learn/courses/30/lessons/157341
+SELECT
+    DISTINCT -- 자동차 ID 리스트는 중복이 없어야 하며 : DISTINCT
+    C.CAR_ID
+FROM CAR_RENTAL_COMPANY_CAR AS C -- CAR_ID(PK)
+    JOIN CAR_RENTAL_COMPANY_RENTAL_HISTORY AS RH -- CAR_ID(FK)
+        ON C.CAR_ID = RH.CAR_ID
+WHERE C.CAR_TYPE = '세단' -- 테이블에서 자동차 종류가 '세단'인 자동차들 중 
+AND MONTH(RH.START_DATE) = 10
+# AND RH.START_DATE BETWEEN '2022-10-01' AND '2022-10-31' -- 10월에 대여를 시작한 기록이 있는 (혹은 MONTH(RH.START_DATE) = 10)
+ORDER BY 
+    C.CAR_ID DESC -- 자동차 ID를 기준으로 내림차순 정렬
+
+
+
 # 1. 취소되지 않은 진료 예약 조회하기
 SELECT
     -- 진료예약번호, 환자이름, 환자번호, 진료과코드, 의사이름, 진료예약일시

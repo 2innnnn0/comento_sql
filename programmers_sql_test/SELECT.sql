@@ -7,6 +7,15 @@ FROM
 WHERE 
     CAR_TYPE = 'SUV' -- 자동차 종류가 'SUV'
 
+# 조건에 맞는 도서 리스트 출력하기
+SELECT
+    BOOK_ID,
+    DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE -- 도서 ID(BOOK_ID), 출판일 (PUBLISHED_DATE) / -- PUBLISHED_DATE의 데이트 포맷이 예시와 동일해야 정답처리 됩니다.
+FROM BOOK
+WHERE YEAR(PUBLISHED_DATE) = '2021'
+AND CATEGORY = '인문' -- 2021년에 출판된 '인문' 카테고리
+ORDER BY 2 -- 결과는 출판일을 기준으로 오름차순 정렬해주세요.
+
 # 1. 과일로 만든 아이스크림 고르기
 -- 코드를 입력하세요
 SELECT

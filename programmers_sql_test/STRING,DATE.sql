@@ -1,5 +1,40 @@
 -- https://school.programmers.co.kr/learn/courses/30/parts/17047
 
+# 자동차 대여 기록 별 대여 금액 구하기 https://school.programmers.co.kr/learn/courses/30/lessons/151141 
+WITH base_t AS (
+SELECT 
+    RH.HISTORY_ID,
+    C.DAILY_FEE,
+    C.CAR_TYPE,
+    DATEDIFF(END_DATE, START_DATE)+1 AS RENT_DURATION, -- 당일 예약도 되나?? 값이 0 인 것은 무엇일까?    
+    CASE
+        WHEN DATEDIFF(END_DATE, START_DATE) BETWEEN 7 AND 29 THEN '7일 이상'
+        WHEN DATEDIFF(END_DATE, START_DATE) BETWEEN 30 AND 89 THEN '30일 이상'
+        WHEN DATEDIFF(END_DATE, START_DATE) >= 90 THEN '90일 이상'
+        ELSE NULL -- '7일 미만'
+    END AS DURATION_TYPE,
+    C.DAILY_FEE * DATEDIFF(END_DATE, START_DATE) AS FEE -- 일일대여금액 * 대여일수
+    -- 대여 기록 별로 대여 금액(컬럼명: FEE)을 구하여 대여 기록 ID와 대여 금액 리스트를 출력
+    -- 대여 기록 ID가 2인 경우, 일일 대여 금액 26,000원에 2일을 곱하면 총 대여 금액은 52,000원
+FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY AS RH -- 대여정보 HISTORY_ID(PK), CAR_ID(FK)
+    JOIN CAR_RENTAL_COMPANY_CAR AS C -- 차량정보 CAR_ID(PK)
+        ON RH.CAR_ID = C.CAR_ID
+WHERE C.CAR_TYPE = '트럭' -- 자동차 종류가 '트럭'
+)
+SELECT
+    bt.HISTORY_ID,
+    # bt.DAILY_FEE,
+    # bt.RENT_DURATION,
+    # bt.DURATION_TYPE,
+    # dp.DISCOUNT_RATE,
+    bt.RENT_DURATION * ROUND(bt.DAILY_FEE * (100 - COALESCE(dp.DISCOUNT_RATE, 0))/100,0) AS FEE -- 대여일수 * (일일대여금액*(100-할인율)/100)
+FROM base_t bt
+    LEFT JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN AS DP -- CAR_TYPE(PK) > 여기에선 LEFT JOIN (7일 미만인 경우 할인 적용을 못받으므로)
+    ON bt.CAR_TYPE = DP.CAR_TYPE -- 대여기간에 따른 할인율 동적 적용. e.g. 7일 이상 > 5%
+        AND bt.DURATION_TYPE = DP.DURATION_TYPE
+ORDER BY FEE DESC, bt.HISTORY_ID DESC -- 1. 대여 금액을 기준으로 내림차순 정렬하고, 2. 대여 기록 ID를 기준으로 내림차순 정렬
+
+
 # 1. 취소되지 않은 진료 예약 조회하기
 SELECT
     -- 진료예약번호, 환자이름, 환자번호, 진료과코드, 의사이름, 진료예약일시
